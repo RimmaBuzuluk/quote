@@ -24,7 +24,6 @@ export default {
 		async fetchQuote() {
 			this.error = null;
 			try {
-				// const response = await fetch('https://api.quotable.io/quotes/random');
 				const response = await fetch('https://programming-quotesapi.vercel.app/api/random');
 				if (!response.ok) {
 					throw new Error(`Server error: ${response.status}`);
@@ -68,15 +67,9 @@ export default {
 	text-align: center;
 }
 
-@media (max-width: 900px) {
-	.quote {
-		font-size: 1rem;
-	}
-}
-
 @media (max-width: 700px) {
 	.quote {
-		font-size: 1.2rem;
+		font-size: 1.5rem;
 	}
 }
 .author {
@@ -112,12 +105,11 @@ button {
 	transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
-/* @media (maxz-width: 800px) {
+@media (min-width: 800px) {
 	button {
-		font-size: 0.1rem;
 		padding: 0.5rem;
 	}
-} */
+}
 
 @media (max-width: 700px) {
 	button {

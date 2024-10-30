@@ -111,7 +111,7 @@ export default {
 .settings-share {
 	position: absolute;
 	bottom: 0;
-	right: 0;
+	right: 10px;
 }
 
 .main-content > RandomQuote {

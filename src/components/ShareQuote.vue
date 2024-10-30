@@ -2,8 +2,12 @@
 	<div class="share-buttons">
 		<h3 class="title">Share this quote:</h3>
 		<div class="share-link">
-			<a :href="`https://t.me/share/url?url=${encodedQuote}`" target="_blank"><img src="../img/telegram.png" /></a>
-			<a :href="`https://www.facebook.com/sharer/sharer.php?u=${encodedQuote}`" target="_blank"><img src="../img/facebook.png" /></a>
+			<a :href="`https://t.me/share/url?url=${encodedQuote}`" target="_blank">
+				<img src="../img/telegram.png" />
+			</a>
+			<a :href="facebookShareUrl" target="_blank">
+				<img src="../img/facebook.png" />
+			</a>
 		</div>
 	</div>
 </template>
@@ -15,6 +19,10 @@ export default {
 		encodedQuote() {
 			return encodeURIComponent(`${this.quote.quote} — ${this.quote.author}`);
 		},
+		facebookShareUrl() {
+			const pageUrl = 'https://your-website.com';
+			return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${this.encodedQuote}`;
+		},
 	},
 };
 </script>
@@ -24,19 +32,12 @@ export default {
 	text-align: center;
 }
 .share-buttons a {
-	margin: 1rem;
+	margin: 0.5rem;
 	color: #007bff;
 	text-decoration: none;
 }
-
 .share-link {
 	display: flex;
 	align-items: center;
-}
-
-@media (max-width: 650px) {
-	.share-buttons {
-		display: none;
-	}
 }
 </style>
