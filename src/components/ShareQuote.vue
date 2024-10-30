@@ -24,7 +24,7 @@ export default {
 	text-align: center;
 }
 .share-buttons a {
-	margin: 0.5rem;
+	margin: 1rem;
 	color: #007bff;
 	text-decoration: none;
 }
@@ -32,5 +32,11 @@ export default {
 .share-link {
 	display: flex;
 	align-items: center;
+}
+
+@media (max-width: 650px) {
+	.share-buttons {
+		display: none;
+	}
 }
 </style>

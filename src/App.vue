@@ -7,11 +7,8 @@
 		</div>
 
 		<RandomQuote :onNewQuote="updateQuote" :language="language" class="main-content" />
-
-		<div class="settings-share">
-			<ShareQuote :quote="currentQuote" />
-		</div>
 	</div>
+	<ShareQuote :quote="currentQuote" class="settings-share" />
 </template>
 
 <script>
@@ -69,17 +66,10 @@ export default {
 
 .history-content {
 	background-color: #f0f0f0;
-	/* width: 80%; */
 	max-width: 300px;
 	height: 100%;
 	padding: 30px 10px 10px 10px;
 	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.history-overlay {
-	background-color: pink;
-	/* margin: 0; */
-	/* flex: 0 0 15%; */
 }
 
 @media (max-width: 700px) {
@@ -119,13 +109,9 @@ export default {
 }
 
 .settings-share {
-	flex: 0 0 15%;
-	background-color: #e8e8e8;
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
 
 .main-content > RandomQuote {
