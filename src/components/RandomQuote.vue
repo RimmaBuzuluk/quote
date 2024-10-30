@@ -4,8 +4,9 @@
 		<div v-else>
 			<p class="quote">{{ quote.quote }}</p>
 			<p class="author">— {{ quote.author }}</p>
-			<button @click="fetchQuote">Get New Quote</button>
-			<button @click="copyToClipboard">Copy Quote</button>
+			<!-- <p class="quote">quote.quote</p>
+			<p class="author">quote.author</p> -->
+			<div class="quote-buttons"><button @click="fetchQuote">Get New Quote</button> <button @click="copyToClipboard">Copy Quote</button></div>
 		</div>
 	</div>
 </template>
@@ -23,6 +24,7 @@ export default {
 		async fetchQuote() {
 			this.error = null;
 			try {
+				// const response = await fetch('https://api.quotable.io/quotes/random');
 				const response = await fetch('https://programming-quotesapi.vercel.app/api/random');
 				if (!response.ok) {
 					throw new Error(`Server error: ${response.status}`);
@@ -54,24 +56,79 @@ export default {
 
 <style scoped>
 .quote-container {
-	padding: 2rem;
-	font-family: Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin: 2rem;
 }
 .quote {
-	font-size: 1.5rem;
+	font-size: 2rem;
 	margin-bottom: 1rem;
+	text-align: center;
+}
+
+@media (max-width: 900px) {
+	.quote {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 700px) {
+	.quote {
+		font-size: 1.2rem;
+	}
 }
 .author {
 	font-size: 1rem;
 	color: #555;
 	margin-bottom: 1rem;
+	text-align: center;
+}
+.quote-buttons {
+	display: flex;
+	justify-content: center;
+	column-gap: 10px;
+}
+
+@media (max-width: 700px) {
+	.quote-buttons {
+		align-items: center;
+		flex-direction: column;
+		row-gap: 10px;
+		column-gap: 0;
+	}
 }
 button {
-	background-color: #007bff;
+	display: block;
+	background: linear-gradient(45deg, #007bff, #00d4ff);
 	color: white;
+	font-size: 1.5rem;
 	border: none;
 	border-radius: 4px;
-	padding: 0.5rem 1rem;
-	margin-right: 10px;
+	padding: 1rem;
+	width: 90%;
+	cursor: pointer;
+	transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+/* @media (maxz-width: 800px) {
+	button {
+		font-size: 0.1rem;
+		padding: 0.5rem;
+	}
+} */
+
+@media (max-width: 700px) {
+	button {
+		font-size: 1rem;
+		padding: 0.5rem;
+	}
+}
+
+button:hover {
+	background: linear-gradient(45deg, #0056b3, #0096c7);
+	transform: scale(1.05);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 </style>

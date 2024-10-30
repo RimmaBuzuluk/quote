@@ -1,5 +1,29 @@
 @import './base.css';
 
+@font-face {
+	font-family: 'Gilroy';
+	src: url('@/assets/fonts/Gilroy-Regular.woff2') format('woff2'), url('@/assets/fonts/Gilroy-Regular.woff') format('woff'), url('@/assets/fonts/Gilroy-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Gilroy';
+	src: url('@/assets/fonts/Gilroy-Bold.woff2') format('woff2'), url('@/assets/fonts/Gilroy-Bold.woff') format('woff'), url('@/assets/fonts/Gilroy-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+body {
+	font-family: 'Gilroy', sans-serif;
+	color: #166ebf;
+	margin: 0;
+}
+
+h3 {
+	font-size: 20px;
+}
+
 /* #app {
   max-width: 1280px;
   margin: 0 auto;
