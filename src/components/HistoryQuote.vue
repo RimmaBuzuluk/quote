@@ -102,7 +102,7 @@ export default {
 }
 
 .quote-list {
-	max-height: 80%;
+	max-height: 70%;
 	overflow-y: scroll;
 	padding: 0;
 	margin: 0;
@@ -121,7 +121,7 @@ export default {
 .history-item {
 	box-sizing: border-box;
 	margin-bottom: 20px;
-	padding: 10px 20px 50px 10px;
+	padding: 20px 20px 50px 10px;
 	border-bottom: 1px solid #ddd;
 	position: relative;
 }
@@ -138,6 +138,8 @@ export default {
 	background-repeat: no-repeat;
 	background-size: cover;
 	border: none;
+	border-radius: 30px;
+
 	position: absolute;
 	bottom: 10px;
 	right: 0;
@@ -145,8 +147,10 @@ export default {
 }
 
 .history-like-active {
-	width: 25px;
+	width: 30px;
 	height: 30px;
+	border-radius: 30px;
+
 	background-image: url(../img/heart.png);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -173,6 +177,7 @@ export default {
 	right: 0;
 	transition: transform 0.3s ease;
 	margin-right: 5px;
+	border-radius: 20px;
 }
 .history-remove:hover {
 	transform: scale(1.25);

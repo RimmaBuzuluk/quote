@@ -3,10 +3,10 @@
 		<h3 class="title">Share this quote:</h3>
 		<div class="share-link">
 			<a :href="`https://t.me/share/url?url=${encodedQuote}`" target="_blank">
-				<img src="../img/telegram.png" />
+				<img class="shate__img" src="../img/telegram.png" />
 			</a>
 			<a :href="facebookShareUrl" target="_blank">
-				<img src="../img/facebook.png" />
+				<img class="shate__img" src="../img/facebook.png" />
 			</a>
 		</div>
 	</div>
@@ -36,8 +36,22 @@ export default {
 	color: #007bff;
 	text-decoration: none;
 }
+
+.shate__img {
+	width: 50px;
+	height: 50px;
+}
+
+@media (max-width: 800px) {
+	.shate__img {
+		width: 30px;
+		height: 30px;
+	}
+}
+
 .share-link {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
 </style>

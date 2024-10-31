@@ -49,9 +49,12 @@ export default {
 
 <template>
 	<div id="app" class="app">
-		<div class="burger" @click="toggleHistory">&#9776;</div>
+		<div class="burger" @click="toggleHistory">
+			<span v-if="!isHistoryOpen">&#9776;</span>
+			<span v-else>&#10005;</span>
+		</div>
 
-		<div :class="{ 'history-overlay': true, open: isHistoryOpen }">
+		<div :class="{ 'history-overlay': true, open: isHistoryOpen }" @click.self="toggleHistory">
 			<HistoryQuote :quoteHistory="quoteHistory" class="history-content" />
 		</div>
 
@@ -81,7 +84,6 @@ export default {
 
 .history-overlay.open {
 	transform: translateX(0);
-	/* max-width: 300px; */
 }
 
 .history-content {
