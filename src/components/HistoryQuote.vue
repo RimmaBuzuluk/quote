@@ -11,6 +11,8 @@
 			</select>
 		</div>
 
+		<button class="unlike" @click="unlikeAllQuote">unlike</button>
+
 		<ul class="quote-list">
 			<li v-for="(item, index) in filteredQuotes" :key="index" class="history-item">
 				<span :class="{ liked: item.liked }">{{ item.quote }} — {{ item.author }}</span>
@@ -51,6 +53,12 @@ export default {
 			this.quoteHistory.splice(index, 1);
 			this.saveHistory();
 		},
+		unlikeAllQuote() {
+			this.quoteHistory.forEach(item => {
+				item.liked = false;
+			});
+			this.saveHistory();
+		},
 		saveHistory() {
 			localStorage.setItem('quoteHistory', JSON.stringify(this.quoteHistory));
 		},
@@ -59,6 +67,14 @@ export default {
 </script>
 
 <style scoped>
+.unlike {
+	width: 50px;
+	height: 50px;
+	background-color: #166ebf;
+	border-radius: 50px;
+	border: 1px solid white;
+	color: white;
+}
 .quote-title {
 	text-align: center;
 	font-weight: 600;
