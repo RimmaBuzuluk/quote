@@ -1,3 +1,41 @@
+<script>
+import { ref, onMounted } from 'vue';
+import { fetchRandomQuote } from '@/api/quoteApi';
+import { ErrorMessages } from '@/constants/ErrorMessages';
+
+export default {
+	props: ['onNewQuote', 'language'],
+	setup(props) {
+		const quote = ref({ quote: '', author: '' });
+		const error = ref(null);
+
+		const fetchQuote = async () => {
+			error.value = null;
+			try {
+				quote.value = await fetchRandomQuote();
+				props.onNewQuote(quote.value);
+			} catch {
+				error.value = ErrorMessages.FETCH_ERROR;
+			}
+		};
+
+		const copyToClipboard = () => {
+			const text = `"${quote.value.quote}" — ${quote.value.author}`;
+			navigator.clipboard.writeText(text).then(() => alert('Quote copied to clipboard!'));
+		};
+
+		onMounted(fetchQuote);
+
+		return {
+			quote,
+			error,
+			fetchQuote,
+			copyToClipboard,
+		};
+	},
+};
+</script>
+
 <template>
 	<div class="quote-container">
 		<div v-if="error" class="error">{{ error }}</div>
@@ -11,39 +49,6 @@
 		</div>
 	</div>
 </template>
-
-<script>
-import { fetchRandomQuote } from '@/api/quoteApi';
-import { ErrorMessages } from '@/constants/ErrorMessages';
-
-export default {
-	props: ['onNewQuote', 'language'],
-	data() {
-		return {
-			quote: { quote: '', author: '' },
-			error: null,
-		};
-	},
-	methods: {
-		async fetchQuote() {
-			this.error = null;
-			try {
-				this.quote = await fetchRandomQuote();
-				this.onNewQuote(this.quote);
-			} catch (error) {
-				this.error = ErrorMessages.FETCH_ERROR;
-			}
-		},
-		copyToClipboard() {
-			const text = `"${this.quote.quote}" — ${this.quote.author}`;
-			navigator.clipboard.writeText(text).then(() => alert('Quote copied to clipboard!'));
-		},
-	},
-	mounted() {
-		this.fetchQuote();
-	},
-};
-</script>
 
 <style scoped>
 .quote-container {

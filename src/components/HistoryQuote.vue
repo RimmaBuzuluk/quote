@@ -1,7 +1,50 @@
+<script>
+import { FilterTypes } from '@/constants/filtersQuote';
+import { filterQuotes } from '@/functions/quoteFilter';
+import { ref, computed, watch } from 'vue';
+
+export default {
+	props: ['quoteHistory'],
+	setup(props) {
+		const filter = ref(FilterTypes.ALL);
+
+		const filteredQuotes = computed(() => filterQuotes(props.quoteHistory, filter.value));
+
+		const toggleLike = index => {
+			props.quoteHistory[index].liked = !props.quoteHistory[index].liked;
+			saveHistory();
+		};
+
+		const removeQuote = index => {
+			props.quoteHistory.splice(index, 1);
+			saveHistory();
+		};
+
+		const unlikeAllQuotes = () => {
+			props.quoteHistory.forEach(item => (item.liked = false));
+			saveHistory();
+		};
+
+		const saveHistory = () => {
+			localStorage.setItem('quoteHistory', JSON.stringify(props.quoteHistory));
+		};
+
+		watch(filteredQuotes, saveHistory);
+
+		return {
+			filter,
+			filteredQuotes,
+			toggleLike,
+			removeQuote,
+			unlikeAllQuotes,
+		};
+	},
+};
+</script>
+
 <template>
 	<div class="quote-history-container">
 		<h3 class="quote-title">Quote History</h3>
-
 		<div class="filter">
 			<label for="filterSelect">Show:</label>
 			<select id="filterSelect" v-model="filter">
@@ -10,9 +53,7 @@
 				<option value="unliked">Unliked</option>
 			</select>
 		</div>
-
-		<button class="unlike" @click="unlikeAllQuote">unlike</button>
-
+		<button class="unlike" @click="unlikeAllQuotes">Unlike All</button>
 		<ul class="quote-list">
 			<li v-for="(item, index) in filteredQuotes" :key="index" class="history-item">
 				<span :class="{ liked: item.liked }">{{ item.quote }} — {{ item.author }}</span>
@@ -25,74 +66,50 @@
 	</div>
 </template>
 
-<script>
-export default {
-	props: ['quoteHistory'],
-	data() {
-		return {
-			filter: 'all',
-		};
-	},
-	computed: {
-		filteredQuotes() {
-			if (this.filter === 'liked') {
-				return this.quoteHistory.filter(item => item.liked);
-			} else if (this.filter === 'unliked') {
-				return this.quoteHistory.filter(item => !item.liked);
-			} else {
-				return this.quoteHistory;
-			}
-		},
-	},
-	methods: {
-		toggleLike(index) {
-			this.quoteHistory[index].liked = !this.quoteHistory[index].liked;
-			this.saveHistory();
-		},
-		removeQuote(index) {
-			this.quoteHistory.splice(index, 1);
-			this.saveHistory();
-		},
-		unlikeAllQuote() {
-			this.quoteHistory.forEach(item => {
-				item.liked = false;
-			});
-			this.saveHistory();
-		},
-		saveHistory() {
-			localStorage.setItem('quoteHistory', JSON.stringify(this.quoteHistory));
-		},
-	},
-};
-</script>
-
 <style scoped>
 .unlike {
-	width: 50px;
-	height: 50px;
+	box-sizing: border-box;
+	width: 40px;
+	height: 40px;
+	padding: 5px;
 	background-color: #166ebf;
-	border-radius: 50px;
+	font-weight: 600;
+	font-size: 8px;
+	border-radius: 40px;
 	border: 1px solid white;
 	color: white;
+	margin: 10px 0;
 }
 .quote-title {
 	text-align: center;
 	font-weight: 600;
 }
 .quote-history-container {
-	max-height: 100%;
-	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 	border: 1px solid #ddd;
 	padding: 10px;
 	border-radius: 5px;
 }
 
+.filter {
+	margin: 10px 0;
+	display: flex;
+	justify-content: end;
+}
+
 .quote-list {
+	flex-grow: 1;
+	overflow-y: auto;
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	display: flex;
+	flex-direction: column-reverse;
 }
 .history-item {
+	box-sizing: border-box;
 	margin-bottom: 20px;
 	padding: 10px 20px 30px 10px;
 	border-bottom: 1px solid #ddd;
@@ -147,12 +164,6 @@ export default {
 }
 .history-remove:hover {
 	transform: scale(1.5);
-}
-
-.filter {
-	margin: 40px 0;
-	display: flex;
-	justify-content: end;
 }
 
 #filterSelect {

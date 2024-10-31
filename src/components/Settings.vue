@@ -1,32 +1,35 @@
-<template>
-	<div>
-		<h3>Settings</h3>
-		<select v-model="localLanguage" @change="updateLanguage">
-			<option value="en">English</option>
-			<option value="uk">Ukrainian</option>
-		</select>
-	</div>
-</template>
-
 <script>
+import { computed } from 'vue';
+
 export default {
-	props: ['language'],
-	computed: {
-		localLanguage: {
-			get() {
-				return this.language;
-			},
-			set(value) {
-				this.$emit('update:language', value);
-			},
-		},
-	},
-	methods: {
-		updateLanguage() {
-			this.$emit('update:language', this.localLanguage);
-		},
+	props: ['quote'],
+	setup(props) {
+		const encodedQuote = computed(() => encodeURIComponent(`${props.quote.quote} — ${props.quote.author}`));
+		const facebookShareUrl = computed(() => {
+			const pageUrl = 'https://your-website.com';
+			return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}&quote=${encodedQuote.value}`;
+		});
+
+		return {
+			encodedQuote,
+			facebookShareUrl,
+		};
 	},
 };
 </script>
+
+<template>
+	<div class="share-buttons">
+		<h3 class="title">Share this quote:</h3>
+		<div class="share-link">
+			<a :href="`https://t.me/share/url?url=${encodedQuote}`" target="_blank">
+				<img src="../img/telegram.png" />
+			</a>
+			<a :href="facebookShareUrl" target="_blank">
+				<img src="../img/facebook.png" />
+			</a>
+		</div>
+	</div>
+</template>
 
 <style scoped></style>

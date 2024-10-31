@@ -1,8 +1,57 @@
+<script>
+import { ref, reactive, onMounted } from 'vue';
+import HistoryQuote from './components/HistoryQuote.vue';
+import RandomQuote from './components/RandomQuote.vue';
+import ShareQuote from './components/ShareQuote.vue';
+
+export default {
+	components: {
+		HistoryQuote,
+		RandomQuote,
+		ShareQuote,
+	},
+	setup() {
+		const currentQuote = reactive({ quote: '', author: '', liked: false });
+		const quoteHistory = ref([]);
+		const language = ref('en');
+		const isHistoryOpen = ref(false);
+
+		onMounted(() => {
+			const savedHistory = JSON.parse(localStorage.getItem('quoteHistory'));
+			if (savedHistory) {
+				quoteHistory.value = savedHistory;
+			}
+		});
+
+		const addNewQuote = newQuote => {
+			currentQuote.quote = newQuote.quote;
+			currentQuote.author = newQuote.author;
+			currentQuote.liked = newQuote.liked;
+			quoteHistory.value.unshift(newQuote);
+			localStorage.setItem('quoteHistory', JSON.stringify(quoteHistory.value));
+		};
+
+		const toggleHistory = () => {
+			isHistoryOpen.value = !isHistoryOpen.value;
+		};
+
+		return {
+			currentQuote,
+			quoteHistory,
+			language,
+			isHistoryOpen,
+			addNewQuote,
+			toggleHistory,
+		};
+	},
+};
+</script>
+
 <template>
 	<div id="app" class="app">
 		<div class="burger" @click="toggleHistory">&#9776;</div>
 
-		<div :class="['history-overlay', { open: isHistoryOpen }]">
+		<div :class="{ 'history-overlay': true, open: isHistoryOpen }">
 			<HistoryQuote :quoteHistory="quoteHistory" class="history-content" />
 		</div>
 
@@ -10,38 +59,6 @@
 	</div>
 	<ShareQuote :quote="currentQuote" class="settings-share" />
 </template>
-
-<script>
-import HistoryQuote from './components/HistoryQuote.vue';
-import RandomQuote from './components/RandomQuote.vue';
-import ShareQuote from './components/ShareQuote.vue';
-
-export default {
-	data() {
-		return {
-			currentQuote: { quote: '', author: '', liked: false },
-			quoteHistory: JSON.parse(localStorage.getItem('quoteHistory')) || [],
-			language: 'en',
-			isHistoryOpen: false,
-		};
-	},
-	methods: {
-		addNewQuote(newQuote) {
-			this.currentQuote = newQuote;
-			this.quoteHistory.unshift(newQuote);
-			localStorage.setItem('quoteHistory', JSON.stringify(this.quoteHistory));
-		},
-		toggleHistory() {
-			this.isHistoryOpen = !this.isHistoryOpen;
-		},
-	},
-	components: {
-		HistoryQuote,
-		RandomQuote,
-		ShareQuote,
-	},
-};
-</script>
 
 <style scoped>
 .app {
@@ -64,6 +81,7 @@ export default {
 
 .history-overlay.open {
 	transform: translateX(0);
+	max-width: 300px;
 }
 
 .history-content {
