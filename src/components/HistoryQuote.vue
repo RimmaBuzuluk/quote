@@ -91,6 +91,8 @@ export default {
 	border: 1px solid #ddd;
 	padding: 10px;
 	border-radius: 5px;
+	position: relative;
+	min-width: 300px;
 }
 
 .filter {
@@ -100,18 +102,26 @@ export default {
 }
 
 .quote-list {
-	flex-grow: 1;
-	overflow-y: auto;
+	max-height: 80%;
+	overflow-y: scroll;
 	padding: 0;
 	margin: 0;
 	list-style: none;
 	display: flex;
 	flex-direction: column-reverse;
+	scrollbar-width: none;
+	position: absolute;
+	bottom: 0;
 }
+
+.quote-list::-webkit-scrollbar {
+	display: none;
+}
+
 .history-item {
 	box-sizing: border-box;
 	margin-bottom: 20px;
-	padding: 10px 20px 30px 10px;
+	padding: 10px 20px 50px 10px;
 	border-bottom: 1px solid #ddd;
 	position: relative;
 }
@@ -122,6 +132,7 @@ export default {
 .history-like {
 	width: 30px;
 	height: 30px;
+	margin-right: 4px;
 	background-image: url(../img/heart-o.png);
 	background-position: center;
 	background-repeat: no-repeat;
@@ -161,9 +172,10 @@ export default {
 	top: 0;
 	right: 0;
 	transition: transform 0.3s ease;
+	margin-right: 5px;
 }
 .history-remove:hover {
-	transform: scale(1.5);
+	transform: scale(1.25);
 }
 
 #filterSelect {

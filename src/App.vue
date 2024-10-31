@@ -81,7 +81,7 @@ export default {
 
 .history-overlay.open {
 	transform: translateX(0);
-	max-width: 300px;
+	/* max-width: 300px; */
 }
 
 .history-content {
