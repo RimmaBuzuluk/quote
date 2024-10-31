@@ -4,14 +4,18 @@
 		<div v-else>
 			<p class="quote">{{ quote.quote }}</p>
 			<p class="author">— {{ quote.author }}</p>
-			<!-- <p class="quote">quote.quote</p>
-			<p class="author">quote.author</p> -->
-			<div class="quote-buttons"><button @click="fetchQuote">Get New Quote</button> <button @click="copyToClipboard">Copy Quote</button></div>
+			<div class="quote-buttons">
+				<button @click="fetchQuote">Get New Quote</button>
+				<button @click="copyToClipboard">Copy Quote</button>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
+import { fetchRandomQuote } from '@/api/quoteApi';
+import { ErrorMessages } from '@/constants/ErrorMessages';
+
 export default {
 	props: ['onNewQuote', 'language'],
 	data() {
@@ -24,22 +28,10 @@ export default {
 		async fetchQuote() {
 			this.error = null;
 			try {
-				const response = await fetch('https://programming-quotesapi.vercel.app/api/random');
-				if (!response.ok) {
-					throw new Error(`Server error: ${response.status}`);
-				}
-
-				const data = await response.json();
-
-				if (data) {
-					this.quote = { quote: data.quote, author: data.author };
-					this.onNewQuote(this.quote);
-				} else {
-					throw new Error('Invalid quote data format.');
-				}
+				this.quote = await fetchRandomQuote();
+				this.onNewQuote(this.quote);
 			} catch (error) {
-				this.error = 'Failed to load quote. Please try again.';
-				console.error(error);
+				this.error = ErrorMessages.FETCH_ERROR;
 			}
 		},
 		copyToClipboard() {

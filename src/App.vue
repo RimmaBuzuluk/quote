@@ -6,7 +6,7 @@
 			<HistoryQuote :quoteHistory="quoteHistory" class="history-content" />
 		</div>
 
-		<RandomQuote :onNewQuote="updateQuote" :language="language" class="main-content" />
+		<RandomQuote :onNewQuote="addNewQuote" :language="language" class="main-content" />
 	</div>
 	<ShareQuote :quote="currentQuote" class="settings-share" />
 </template>
@@ -19,16 +19,17 @@ import ShareQuote from './components/ShareQuote.vue';
 export default {
 	data() {
 		return {
-			currentQuote: { quote: '', author: '' },
-			quoteHistory: [],
+			currentQuote: { quote: '', author: '', liked: false },
+			quoteHistory: JSON.parse(localStorage.getItem('quoteHistory')) || [],
 			language: 'en',
 			isHistoryOpen: false,
 		};
 	},
 	methods: {
-		updateQuote(newQuote) {
+		addNewQuote(newQuote) {
 			this.currentQuote = newQuote;
 			this.quoteHistory.unshift(newQuote);
+			localStorage.setItem('quoteHistory', JSON.stringify(this.quoteHistory));
 		},
 		toggleHistory() {
 			this.isHistoryOpen = !this.isHistoryOpen;
@@ -41,6 +42,7 @@ export default {
 	},
 };
 </script>
+
 <style scoped>
 .app {
 	display: flex;
